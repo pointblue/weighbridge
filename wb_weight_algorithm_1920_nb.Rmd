@@ -1,0 +1,77 @@
+---
+title: 'R Notebook: 19-20 Weighbridge algorithm exploration'
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r}
+#Set up the environment for TSINFO3
+.libPaths("C:/R/libs")
+
+library(dplyr)
+library(MuMIn)
+library(pastecs)
+
+setwd("Z:/Informatics/S031/analyses/wb/weight algorithms/wb2_and_3/1920")
+
+#Work with the weigbhridge csv created by foxpro
+platsum <- read.csv("avidsum1920.csv", header = TRUE, sep=",", dec= ".")
+#platsum created by foxpro programs - see *.prg in wd
+#warning that the dwt fields are zero by default - so use in combination with nw
+#i.e., if nw<50, then fields like wt50dwt10 are going to be zero...
+
+#filter data on the basis of the above     
+
+platsum_filt <- filter(platsum, calc_wt>=2.5 & calc_wt<=6.5 & nw>100)
+summary(platsum$sd_calcwt)
+
+
+platsum_filt <- filter(platsum, calc_wt>=2.5 & calc_wt<=6.5 & sd_calcwt<=0.02 & nw>100)
+
+nrow(platsum_filt)
+summary(platsum_filt$platwt)
+summary(platsum_filt$calc_wt)
+summary(platsum_filt$sd_calcwt)
+```
+
+
+Calc_wt model:
+```{r}
+globalmodel_cw=lm(calc_wt ~ maxwt+avgwt+medwt+nw+wt20dwt10+wt30dwt10
+               +wt40dwt10+wt50dwt10+wt60dwt10+wt70dwt10+wt80dwt10+wt90dwt10+wt100dwt10, data=platsum_filt)
+
+summary(globalmodel_cw)
+```
+```{r}
+options(na.action = "na.fail") # change the default "na.omit" to prevent models
+# from being fitted to different datasets in case of missing values.
+#get all the combinations
+combinations<-dredge(globalmodel_cw)
+coefTable(combinations)[1]
+
+bestmodel<-lm(calc_wt ~ avgwt+maxwt+medwt+nw+wt100dwt10+wt80dwt10, data = platsum_filt)
+summary(bestmodel)
+plot(bestmodel)
+
+```
+
+```{r}
+#Predict weights and estimate errors
+pred.int <- predict(bestmodel, platsum, interval = "prediction")
+platsum <- cbind(platsum, pred.int)
+
+platsum<-rename(platsum, pred_wt = fit)
+
+platsum$pred_wt[platsum$pred_wt <= 0] <- NA
+platsum$lwr[is.na(platsum$pred_wt)] <- NA
+platsum$upr[is.na(platsum$pred_wt)] <- NA
+
+nrow(subset(platsum, calc_wt<=0 & pred_wt>0))
+nrow(subset(platsum, pred_wt>0))
+
+write.csv(platsum, "wbdata_1920_pred_wts.csv")     
+
+```
+
