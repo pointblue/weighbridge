@@ -1,19 +1,4 @@
 *to summarize wb2.0 data
-*v3 fixes weight calculations vs. v2
-*v4 fixes avidstars errors with banddata, helps user find banddata, creates avidsum.dbf, browses avidsum at end
-*v5 fixes potential to miss different ID's in same crossing; allows an event to start with an opto reset
-*v6 reconciles forked v4a. v4a was created to fix crossing duration calculation. Opto res changed to opto reset
-*v7 for wb2.1 Nov 2018
-*v8.1 found a case where direction seems to have been wrong due to two penguins on scale at same time - added a trap
-*for flagging when opto 12 is happening (both optos) during ID crossing - mark as unk (we only knew it was wrong because
-*of observations of nest exchanges...data were ambiguous.
-*current version (12/8/18) sets to "unk" if there are any opto 12's during the crossing - but this might be too conservative.
-*Trying to get rid of using bandtal - back to banddata now (8.2.prg)
-*re-modeled WB data using wb_band_data, wb_nest_checks, wb_nests
-*updating links accordingly
-*also tracking "bad_avid" for potentially redundant ID's with new encoding
-
-*Feb 2020: working on using avidsum base code to go through all WB events for weight calculation algorithms
 
 CLOSE ALL
 CLEAR
