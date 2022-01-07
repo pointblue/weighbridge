@@ -13,7 +13,7 @@ library(dplyr)
 library(MuMIn)
 library(pastecs)
 
-setwd("Z:/Informatics/S031/analyses/wb/weight algorithms/wb2_and_3/1819")
+#set working directory here as needed
 
 #Work with the weigbhridge csv created by foxpro
 platsum <- read.csv("avidsum_1819.csv", header = TRUE, sep=",", dec= ".")
