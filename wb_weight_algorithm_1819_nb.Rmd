@@ -6,8 +6,6 @@ output: html_notebook
 
 ```{r}
 #Set up the environment
-#if you are Grant and working on Grant's laptop
-.libPaths("C:/gballard/R/libs")
 
 library(dplyr)
 library(MuMIn)
