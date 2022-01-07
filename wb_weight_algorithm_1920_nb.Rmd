@@ -7,8 +7,7 @@ output:
 
 
 ```{r}
-#Set up the environment for TSINFO3
-.libPaths("C:/R/libs")
+#Set up the environment
 
 library(dplyr)
 library(MuMIn)
