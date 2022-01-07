@@ -4,27 +4,24 @@ output: html_notebook
 ---
 
 ```{r get organized}
-#Set up the environment for TSINFO3
+#Set up the environment
 .libPaths("C:/R/libs")
 #add the libraries
 library(dplyr)
-#library(MuMIn)
-#library(pastecs)
 
 #specify the working directory
-setwd("Z:/Informatics/S031/analyses/wb/out-in-out")
 
 #choose (un-comment) the appropriate weigbhridge csv created by foxpro
-#avidsum <- read.csv("Z:/Informatics/S031/analyses/wb/weight algorithms/wb2_and_3/1617/wbdata_1617_pred_wts.csv", header = TRUE, sep=",", dec= ".")
-#avidsum <- read.csv("Z:/Informatics/S031/analyses/wb/weight algorithms/wb2_and_3/1718/wbdata_1718_pred_wts.csv", header = TRUE, sep=",", dec= ".")
-#avidsum <- read.csv("Z:/Informatics/S031/analyses/wb/weight algorithms/wb2_and_3/1819/wbdata_1819_pred_wts.csv", header = TRUE, sep=",", dec= ".")
-avidsum <- read.csv("Z:/Informatics/S031/analyses/wb/weight algorithms/wb2_and_3/1920/wbdata_1920_pred_wts.csv", header = TRUE, sep=",", dec= ".")
+#avidsum <- read.csv("wbdata_1617_pred_wts.csv", header = TRUE, sep=",", dec= ".")
+#avidsum <- read.csv("wbdata_1718_pred_wts.csv", header = TRUE, sep=",", dec= ".")
+#avidsum <- read.csv("wbdata_1819_pred_wts.csv", header = TRUE, sep=",", dec= ".")
+avidsum <- read.csv("wbdata_1920_pred_wts.csv", header = TRUE, sep=",", dec= ".")
 
 #choose the name of the correct nest file:
-#nestfile<-"Z:/Informatics/S031/S0311617/croz1617/wb/wb_nests_1617.csv"
-#nestfile<-"Z:/Informatics/S031/S0311718/croz1718/wb/wb_nests_1718.csv"
-#nestfile<-"Z:/Informatics/S031/S0311819/croz1819/wb/wb_nests_1819.csv"
-nestfile<-"Z:/Informatics/S031/S0311920/croz1920/wb/wb_nests_1920.csv"
+#nestfile<-"wb_nests_1617.csv"
+#nestfile<-"wb_nests_1718.csv"
+#nestfile<-"wb_nests_1819.csv"
+nestfile<-"wb_nests_1920.csv"
 
 
 #so you don't have to scroll all the way to bottom to change the name of the final product (but you do need to change it here):
@@ -73,8 +70,7 @@ avidsum_nsort$date<-as.POSIXct(strptime(avidsum_nsort$datetime1, "%Y-%m-%d", tz=
 #looking at that file it is very difficult to tell if there are mis-attributed directions
 #attempt to scan visually by ploting the sequences
 
-
-#Code based on Annie's prior work on this:
+#Code based on AS prior work on this:
 # Construct attendance patterns by nest ####
 
 # consider removing xings that were less than 5 min apart?
@@ -94,7 +90,6 @@ nest_attend <- function(num, file, startdate, enddate, coltext){
   calibrate::textxy(wb$datetime1,as.numeric(wb$avid), labs=wb$direction, cex=0.75, col=coltext,offset=0)
   calibrate::textxy(wb$datetime1[wb$direction=="unk"],as.numeric(wb$avid[wb$direction=="unk"]), labs=wb$direction, cex=0.75, col="red",offset=0)
 }
-
 
 par(mfrow=c(4,2), mar=c(2,5,2,2),oma=c(5,3,3,3), las=1)
 
